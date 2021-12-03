@@ -10,7 +10,7 @@ Table of contents
   * [Initialisation](#initilisation)
   * [Produce validation Delphes samples](#producing-delphes)
   * [Produce Delphes Flat trees](#producing-flatrees)
-  * [Stes to produce trees for ttHbb DL analysis](#producing-flatrees-ttHbbDL)
+  * [Steps to produce trees for ttHbb DL analysis](#producing-flatrees-ttHbbDL)
 
 
 Clone 
@@ -97,8 +97,8 @@ The following command will produce a flat Ntuple, with 10 events.
 python bin/Ntuplizer.py -i delphes/delphes.root -o flat_tree.root -n 10
 ```
 
-producing-flatrees-ttHbbDL
-=========================
+Steps to produce trees for ttHbb DL analysis
+============================================
 
 1. Start with the **Initialisation** step
 
@@ -115,7 +115,7 @@ cd ../delphes
 ```
 
 
-One can run for multiple files using HTCondor. List of input files and directory to save the output files as well as local path have to be set within the script **createManyJobs.sh**. File list is stored in **files.txt**.
+One can run for multiple files using HTCondor. List of input files and directory to save the output files as well as local paths have to be set within the script **createManyJobs.sh**. File list is stored in **files.txt**. To submit jobs, run:
 
 ```
 voms-proxy-init -voms cms -rfc -out ${HOME}/.x509up_${UID} -valid 192:00
