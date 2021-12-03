@@ -1,7 +1,8 @@
 DelphesNtuplizer
 =============
 
-This package allows you to produce to flat Ntuples from Delphes PhaseII samples.
+This package allows you to produce to flat Ntuples from Delphes PhaseII samples. Some information on the Delphes samples for Snowmass 2021 can be found in [this](https://twiki.cern.ch/twiki/bin/viewauth/CMS/DelphesInstructions#Delphes_instructions_for_Snowmas) TWiki.
+
 
 Table of contents
 =================
@@ -78,6 +79,23 @@ To produce Delphes validation samples run this command (by changing the appropia
 ./DelphesCMSFWLite ../cards/CMS_PhaseII_200PU_Snowmass2021_v0.tcl delphes.root /eos/cms/store/relval/CMSSW_11_2_0_pre9/RelValZMM_14/GEN-SIM-RECO/PU_112X_mcRun4_realistic_v4_2026D66PU200-v1/00000/d3b9f895-0c25-4171-9c21-d6cc9b365891.root
 ```
 
+To run for multiple files using HTCondor first set the user proxy :  
+
+```
+voms-proxy-init -voms cms -rfc -out ${HOME}/.x509up_${UID} -valid 192:00
+export X509_USER_PROXY=${HOME}/.x509up_${UID}
+```
+
+Then submit by running the following script. List of input files and directory to save the output files as well as local path have to be set within the script.
+```
+source createManyJobs.sh
+```
+
+Fot the ttHbb DL projection studies used 
+`/TTJets_DiLept_TuneCUETP8M1_14TeV-madgraphMLM-pythia8/PhaseIISummer17wmLHEGENOnly-93X_upgrade2023_realistic_v5_ext1-v3/GEN` dataset. Files of this dataset are 
+listed in **files.txt**
+
+
 Produce Delphes flat trees
 ==========================
 
@@ -94,3 +112,5 @@ The following command will produce a flat Ntuple, with 10 events.
 ``` 
 python bin/Ntuplizer.py -i delphes/delphes.root -o flat_tree.root -n 10
 ```
+
+The macro **bin/Ntuplizer_ttHbb.py** has been adapted to produce flat trees relevant to the phase-space of the ttHbb DL analysis.
