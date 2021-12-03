@@ -10,6 +10,7 @@ Table of contents
   * [Initialisation](#initilisation)
   * [Produce validation Delphes samples](#producing-delphes)
   * [Produce Delphes Flat trees](#producing-flatrees)
+  * [Stes to produce trees for ttHbb DL analysis](#producing-flatrees-ttHbbDL)
 
 
 Clone 
@@ -79,23 +80,6 @@ To produce Delphes validation samples run this command (by changing the appropia
 ./DelphesCMSFWLite ../cards/CMS_PhaseII_200PU_Snowmass2021_v0.tcl delphes.root /eos/cms/store/relval/CMSSW_11_2_0_pre9/RelValZMM_14/GEN-SIM-RECO/PU_112X_mcRun4_realistic_v4_2026D66PU200-v1/00000/d3b9f895-0c25-4171-9c21-d6cc9b365891.root
 ```
 
-To run for multiple files using HTCondor first set the user proxy :  
-
-```
-voms-proxy-init -voms cms -rfc -out ${HOME}/.x509up_${UID} -valid 192:00
-export X509_USER_PROXY=${HOME}/.x509up_${UID}
-```
-
-Then submit by running the following script. List of input files and directory to save the output files as well as local path have to be set within the script.
-```
-source createManyJobs.sh
-```
-
-Fot the ttHbb DL projection studies used 
-`/TTJets_DiLept_TuneCUETP8M1_14TeV-madgraphMLM-pythia8/PhaseIISummer17wmLHEGENOnly-93X_upgrade2023_realistic_v5_ext1-v3/GEN` dataset. Files of this dataset are 
-listed in **files.txt**
-
-
 Produce Delphes flat trees
 ==========================
 
@@ -113,4 +97,46 @@ The following command will produce a flat Ntuple, with 10 events.
 python bin/Ntuplizer.py -i delphes/delphes.root -o flat_tree.root -n 10
 ```
 
+producing-flatrees-ttHbbDL
+=========================
+
+1. Start with the **Initialisation** step
+
+2. Fot the ttHbb DL projection studies, the `/TTJets_DiLept_TuneCUETP8M1_14TeV-madgraphMLM-pythia8/PhaseIISummer17wmLHEGENOnly-93X_upgrade2023_realistic_v5_ext1-v3/GEN` dataset is used. Files of this dataset are
+listed in **files.txt**. To set-up the proper environment and run a local test do : 
+
+   
+```
+cd CMSSW_10_0_5
+cmsenv
+cd ../delphes
+./DelphesCMSFWLite ../cards/CMS_PhaseII_200PU_Snowmass2021_v0.tcl delphes.root root://xrootd-cms.infn.it//store/mc/PhaseIISummer17wmLHEGENOnly/TTJets_DiLept_TuneCUETP8M1_14TeV-madgraphMLM-pythia8/GEN/93X_upgrade2023_realistic_v5_ext1-v3/10000/007DE3C2-C653-E811-8EA1-0242AC1C0500.root
+
+```
+
+
+One can run for multiple files using HTCondor. List of input files and directory to save the output files as well as local path have to be set within the script **createManyJobs.sh**. File list is stored in **files.txt**.
+
+```
+voms-proxy-init -voms cms -rfc -out ${HOME}/.x509up_${UID} -valid 192:00
+export X509_USER_PROXY=${HOME}/.x509up_${UID}
+source createManyJobs.sh
+```
+
+
 The macro **bin/Ntuplizer_ttHbb.py** has been adapted to produce flat trees relevant to the phase-space of the ttHbb DL analysis.
+
+Set up the proper environment:
+
+```
+cd CMSSW_10_0_5
+cmsenv
+cd ..
+```
+
+The following command will produce a flat Ntuple, with 10 events.
+   
+```
+python bin/Ntuplizer_ttHbb.py -i delphes.root -o delphes/flat_tree.root -n 10
+```
+
