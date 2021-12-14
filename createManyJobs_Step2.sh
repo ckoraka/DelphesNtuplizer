@@ -2,10 +2,10 @@
 ###################################
 # define paths
 ###################################
-filelist="files_ttH.txt"
+#filelist="files_2nd-step.txt"
+filelist="files_2nd-step_ttH.txt"
 curDir="/afs/cern.ch/work/c/ckoraka/Delphes/DelphesNtuplizer"
-#outputDir="/eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/ckoraka/Delphes_1st-Step"
-outputDir="/eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/ckoraka/Delphes_1st-Step-ttH"
+outputDir="/eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/ckoraka/Delphes_2nd-Step_ttH"
 
 ##################################
 # cleaning & creating directories
@@ -78,10 +78,9 @@ source /cvmfs/cms.cern.ch/cmsset_default.sh
 scp -r /afs/cern.ch/work/c/ckoraka/Delphes/DelphesNtuplizer .
 cd DelphesNtuplizer/CMSSW_10_0_5/src
 source set_env.sh
-cd ../../delphes
-rm -rf delphes.root
-./DelphesCMSFWLite ../cards/CMS_PhaseII_200PU_Snowmass2021_v0.tcl delphes.root ${input}
-mv delphes.root ${outputDir}/delphes_${n}.root
+cd ../..
+python bin/Ntuplizer.py -i ${input} -o output.root 
+mv output.root ${outputDir}/delphes_${n}.root
 @EOI
 
 echo ---created executable file---
@@ -91,7 +90,7 @@ executable              = $jobfile
 output                  = out/$jobfile.out
 error                   = err/$jobfile.err
 log                     = log/$jobfile.log
-+JobFlavour             = "tomorrow"
++JobFlavour             = "workday"
 use_x509userproxy       = true
 x509userproxy = $X509_USER_PROXY
 should_transfer_files   = YES
